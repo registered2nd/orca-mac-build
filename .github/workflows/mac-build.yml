@@ -195,18 +195,19 @@ jobs:
           if-no-files-found: ignore
           retention-days: 7
 
+      # Its own folder: Orca's build writes its compiled code to out/.
       - name: Collect the update files
         run: |
-          mkdir -p out
-          cp dist/latest-mac.yml "out/latest-mac-${{ matrix.arch }}.yml"
+          mkdir -p mac-update
+          cp dist/latest-mac.yml "mac-update/latest-mac-${{ matrix.arch }}.yml"
           shopt -s nullglob
-          cp dist/*.zip dist/*.zip.blockmap dist/*.dmg dist/*.dmg.blockmap out/
-          ls -la out
+          cp dist/*.zip dist/*.zip.blockmap dist/*.dmg dist/*.dmg.blockmap mac-update/
+          ls -la mac-update
 
       - uses: actions/upload-artifact@v7
         with:
           name: mac-${{ matrix.arch }}
-          path: out/
+          path: mac-update/
           if-no-files-found: error
           retention-days: 3
 
